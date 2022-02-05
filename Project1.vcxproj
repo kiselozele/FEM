@@ -126,6 +126,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="FEM.h" />
+    <ClInclude Include="matrix.h" />
     <ClInclude Include="point.h" />
   </ItemGroup>
   <ItemGroup>

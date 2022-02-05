@@ -2,16 +2,10 @@
 #define FEMFILE
 #include <vector>
 #include <string>
+#include "point.h"
+#include "matrix.h"
 using namespace std;
 
-struct point {
-    public:
-    point();
-    point(double x, double y);
-
-    double x;
-    double y;
-};
 
 struct matrix {
 public:

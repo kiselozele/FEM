@@ -9,15 +9,6 @@
 using namespace std;
 
 
-point::point() {
-    x = 0.0;
-    y = 0.0;
-}
-point::point(double x, double y) {
-    this->x = x;
-    this->y = y;
-}
-
 
 FEM::FEM() {
     this->unit_element = { { 0,0 },{ 1,0 },{ 0,1 } };

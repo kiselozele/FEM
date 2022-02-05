@@ -3,8 +3,19 @@
 
 #include <vector>
 using namespace std;
-/*
+
 struct point {
+public:
+	point();
+	point(double x, double y);
+
+	double x;
+	double y;
+};
+
+
+/*
+
 public:
 	point();
 	point(double x, double y);

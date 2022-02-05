@@ -2,10 +2,12 @@
 #include <vector>
 #include <cmath>
 
-//#include "point.h"
+#include "point.h"
+#include "matrix.h"
+#include "FEM.h"
+
 //#include "delone.h"
 
-#include "FEM.h"
 
 using namespace std;
 // TODO: matrix.write_to_txt_file()
@@ -16,8 +18,7 @@ using namespace std;
 //       fix matrix.transpose() to "return" a matrix
 
 int main() {
-    FEM F;
-    matrix GL = F.
-    GL.print();
+    point a(0,0);
+    cout<<a.x;
 
 }

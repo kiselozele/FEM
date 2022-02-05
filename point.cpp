@@ -1,4 +1,3 @@
-
 #include "point.h"
 
 #include <iostream>
@@ -6,6 +5,16 @@
 #include <cmath>
 
 using namespace std;
+
+point::point() {
+	x = 0.0;
+	y = 0.0;
+}
+point::point(double x, double y) {
+	this->x = x;
+	this->y = y;
+}
+
 /*
 point::point() {
 	x = 0.0;
