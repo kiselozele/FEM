@@ -125,14 +125,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="elt.h" />
     <ClInclude Include="FEM.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="point.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="chmdu.cpp" />
+    <ClCompile Include="elt.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="FEM.cpp" />
+    <ClCompile Include="matrix.cpp" />
     <ClCompile Include="point.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="text\boundary_0.txt" />
+    <Text Include="text\elements.txt" />
+    <Text Include="text\nodes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

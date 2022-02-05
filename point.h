@@ -1,9 +1,6 @@
 #ifndef POINTS
 #define POINTS
 
-#include <vector>
-using namespace std;
-
 struct point {
 public:
 	point();
