@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <iomanip> 
 #include "matrix.h"
 
 matrix::matrix() {
@@ -50,6 +51,17 @@ matrix matrix::operator + (matrix& M) {
     return NEW;
 }
 
+matrix matrix::operator - (matrix& M) {
+    if (this->m != M.m || this->n != M.n)
+        throw "Not compatible matricies for operator +";
+    matrix NEW(this->n, M.m);//sizes = this->n x M.m
+    for (int i = 0; i < this->n; i++)
+        for (int j = 0; j < M.m; j++)
+            NEW[i][j] += this->data[i][j] - M[i][j];
+    return NEW;
+}
+
+
 matrix matrix::operator *(double d) {
     matrix NEW(this->n, this->m);//sizes = this->n x M.m
     for (int i = 0; i < this->n; i++)
@@ -70,11 +82,12 @@ void matrix::print() {
 
 void matrix::write(string name) {
     ofstream file;
+    file<<fixed<<setprecision(15);
     string dir = "text/" + name + ".txt";
     file.open(dir);
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
-            file << data[i][j] << ",";
+            file << data[i][j] << "\t";
         }
         file << "\n";
     }
@@ -132,7 +145,101 @@ void matrix::transpose() {
     swap(this->m, this->n);
 }
 
+void matrix::swap_rows(int i, int j) {
+    swap(data[i], data[j]);
+}
+
 matrix transpose(matrix M) {
     M.transpose();
     return M;
 }
+
+matrix gauss(matrix A, matrix b){
+    int n = A.n;
+    
+    for (int i = 0;i < n;i++) {
+        int max_index = i;
+        for (int j = i + 1;j < n;j++) {
+            if(abs(A[j][i]) > abs(A[max_index][i]))
+                max_index = j;
+        }
+
+        for (int j = i;j < n;j++) {
+            double temp = A[i][j];
+            A[i][j] = A[max_index][j];
+            A[max_index][j] = temp;
+        }
+        double temp = b[i][0];
+        b[i][0] = b[max_index][0];
+        b[max_index][0] = temp;
+        for (int j = i + 1;j < n;j++) {
+            double l = A[j][i]/A[i][i];
+            A[j][i] = 0;
+            for (int k = i + 1;k < n;k++) {
+                A[j][k] -= l*A[i][k];
+            }
+            b[j][0] -= l*b[i][0];
+        }
+    }
+    matrix res(A.n, 1);
+
+    for (int i = n - 1;i >= 0;i--) {
+        double sumprod = 0;
+        for (int j = i + 1;j < n;j++) {
+            sumprod += A[i][j]*res[j][0];
+        }
+        res[i][0] = (b[i][0]-sumprod)/A[i][i];
+
+        
+    }
+
+    return res;
+}
+
+/*
+
+vector<double> gauss(matrix A, vector<double> b){
+    int n = A.n;
+    
+    for (int i = 0;i < n;i++) {
+        int max_index = i;
+        for (int j = i + 1;j < n;j++) {
+            if(abs(A[j][i]) > abs(A[max_index][i]))
+                max_index = j;
+        }
+
+        for (int j = i;j < n;j++) {
+            double temp = A[i][j];
+            A[i][j] = A[max_index][j];
+            A[max_index][j] = temp;
+        }
+        double temp = b[i];
+        b[i] = b[max_index];
+        b[max_index] = temp;
+        for (int j = i + 1;j < n;j++) {
+            double l = A[j][i]/A[i][i];
+            A[j][i] = 0;
+            for (int k = i + 1;k < n;k++) {
+                A[j][k] -= l*A[i][k];
+            }
+            b[j] -= l*b[i];
+        }
+    }
+    vector<double> res;
+    for (int i=0; i<n; i++) res.push_back(0);
+
+    for (int i = n - 1;i >= 0;i--) {
+        double sumprod = 0;
+        for (int j = i + 1;j < n;j++) {
+            sumprod += A[i][j]*res[j];
+        }
+        res[i] = (b[i]-sumprod)/A[i][i];
+
+        
+    }
+    cout<< "\n\n";
+    A.print();
+
+    return res;
+}
+*/

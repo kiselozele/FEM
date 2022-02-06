@@ -44,6 +44,9 @@
     <ClCompile Include="elt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gnuplot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="text\boundary_0.txt">

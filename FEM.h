@@ -23,15 +23,22 @@ public:
     //vector<point> unit_element; // Unit triangle: { { 0,0 },{ 1,0 },{ 0,1 } }
     elt unit_elt; // Unit triangle: { { 0,0 },{ 1,0 },{ 0,1 } }
     vector<double> time_nodes;
+    double time_step;
+    vector<matrix> time_layers_Q;
+    vector<matrix> time_layers_S;
 
     matrix global_matrix_mass;
-    matrix global_maxtrix_stiffness;
+    matrix global_matrix_stiffness;
 
     matrix psi(point p);
+    
+    matrix nabla_psi(point &p);
+    matrix transform_stiffness(elt &e); // Matrix B
+
     double jacobian(elt &e);
 
     matrix create_local_matrix_mass(elt &e);
-    //matrix create_local_matrix_stiffness(int element_id);
+    matrix create_local_matrix_stiffness(elt &e);
 
     void read_points();
     void read_elements();
@@ -39,6 +46,8 @@ public:
 
     void create_time_nodes(double start_time, double end_time, int number_of_nodes);
     void create_global_matricies();
+
+    void start();
 };
 
 

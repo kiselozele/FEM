@@ -22,6 +22,7 @@ public:
 
     vector<double>& operator [] (int index);
     matrix operator + (matrix& M);
+    matrix operator - (matrix& M);
     matrix operator * (matrix& M);
     matrix operator * (double d);
     void print();
@@ -29,10 +30,13 @@ public:
     void subMatrix(matrix temp, int p, int q, int n);
     double det();
 
+    void swap_rows(int i, int j);
     void transpose();
     //matrix transpose();
 };
 
 matrix transpose(matrix M);
+
+matrix gauss(matrix A, matrix b);
 
 #endif
