@@ -15,6 +15,33 @@ point::point(double x, double y) {
 	this->y = y;
 }
 
+point point::operator + (point const &p){
+	point res;
+	res.x = this->x + p.x;
+	res.y = this->y + p.y;
+	return res;
+}
+
+point point::operator - (point const &p){
+	point res;
+	res.x = this->x - p.x;
+	res.y = this->y - p.y;
+	return res;
+}
+
+double point::operator ^ (point const &p){
+	return this->x*p.y - this->y*p.x;
+}
+
+double point::operator * (point const &p){
+	return this->x*p.x + this->y*p.y;
+}
+
+double point::len(){
+	return pow(pow(this->x,2) + pow(this->y,2), 0.5);
+}
+
+
 /*
 point::point() {
 	x = 0.0;

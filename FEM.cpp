@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <chrono>
 
 #define PI 3.14159265358979323846
 using namespace std;
@@ -205,6 +206,7 @@ void FEM::create_global_matricies() {
                 global_matrix_mass[elts[i].id_points[j]][elts[i].id_points[k]] += A[j][k];
             }
         }
+        if(i%500 == 0) cout<<"matrix_mass #"<<i<<"/" << elts.size()<<endl;
     }
     for (int i = 0; i < elts.size(); i++) {
         matrix A = create_local_matrix_stiffness(elts[i]);
@@ -213,6 +215,7 @@ void FEM::create_global_matricies() {
                 global_matrix_stiffness[elts[i].id_points[j]][elts[i].id_points[k]] += A[j][k];
             }
         }
+        if(i%500 == 0) cout<<"matrix_stiffness #"<<i<<"/" << elts.size()<<endl;
     }
     //global_matrix_mass[elements[i][j]][elements[i][k]] += A[j][k];
 }
@@ -232,7 +235,11 @@ void FEM::start() {
     /// <summary>
     /// INITIAL CONDITIONS! te tuk sa po sluchainost vektorite time_layers_Q[0] i time_layers_S[0]
     /// </summary>
+    int counter =1;
+    cout<< "Starting to calc time layers:\n";
     for (int l = 1; l < time_nodes.size();l++) {
+        auto start = chrono::steady_clock::now();
+
         b = A1*time_layers_Q[l-1];
         matrix b_temp = (global_matrix_mass*time_layers_S[l-1])*(2./time_step);
         b = b+b_temp;
@@ -241,5 +248,10 @@ void FEM::start() {
             time_layers_Q[l][boundary_point_id_1[k]][0] = 0.1*sin(8*PI*time_nodes[l]);
         }
         time_layers_S[l] = (time_layers_Q[l] - time_layers_Q[l-1])*(2./time_step) - time_layers_S[l-1];
+
+        auto end = chrono::steady_clock::now();
+        chrono::duration<double> print = (end-start);
+        cout<< "time layer "<<l<<"/"<<time_nodes.size()<<"elapsed: " <<print.count() << "'s" << endl;
+        counter++;
     }
 }

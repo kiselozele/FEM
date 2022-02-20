@@ -2,34 +2,36 @@
 #include <vector>
 #include <cmath>
 #include <string>
-#include "point.h"
-#include "elt.h"
-#include "matrix.h"
-#include "FEM.h"
-
+#include <random>
+//#include "point.h"
+//#include "elt.h"
+//#include "matrix.h"
+//#include "FEM.h"
 //#include "delone.h"
+#include "triangulation.h"
+
 using namespace std;
 
 
 //TODO:
 //DONE   matrix.write_to_txt_file()
-//       assemble global_matrix_stiffness & local_matrix_stiffness
+//DONE   assemble global_matrix_stiffness & local_matrix_stiffness
 //       tinyexpr++ into code
 //DONE   struct definition of an element
-//       gnuplot_functions in header?
+//NOT DOING   gnuplot_functions in header?
 //DONE   fix matrix.transpose() to "return" a matrix
 
-
+/*
 void plot_2d_NEW(vector<double>& v1, vector<double>& v2, vector<vector<double>>& v3, string image_name){
 
     FILE * gnuplotPipe = _popen ("gnuplot -persistant", "w"); // отваряме виртуална конзола с команда gnuplot и можем да си пишем в нея
 
     vector<string> commands;
    
-    commands.push_back("set terminal gif animate delay 5 size 300, 300");// default размер на изображението (1024, 768)
+    commands.push_back("set terminal gif animate delay 50 size 300, 300");// default размер на изображението (1024, 768)
     commands.push_back("set output '" + image_name + ".gif'"); // може да се промени на .jpeg и други, но трябва преди това set terminal jpeg
 
-    commands.push_back("set xrange [0:1]");
+    commands.push_back("set xrange [-0.25:1]");
     commands.push_back("set yrange [0:1]");
     commands.push_back("set zrange [-0.05:0.05]");
     commands.push_back("set xyplane at 0");
@@ -45,7 +47,7 @@ void plot_2d_NEW(vector<double>& v1, vector<double>& v2, vector<vector<double>>&
     commands.push_back("set dgrid3d 10, 10");
     commands.push_back("set pm3d");
 
-    for(int k=0;k<v3.size();k++){
+    for(int k=0;k<v3.size();k+=1){
         commands.push_back("$grid << EOD");
         for(int i=0;i<v3[k].size();i++){
                 commands.push_back(to_string(v1[i]) + "\t"+ to_string(v2[i]) + "\t" + to_string(v3[k][i]));
@@ -57,11 +59,12 @@ void plot_2d_NEW(vector<double>& v1, vector<double>& v2, vector<vector<double>>&
         fprintf(gnuplotPipe, "%s \n", commands[i].c_str());// много важно конвертиране от c++ string към c string - string.c_str()
     }
 }
-
+*/
 
 int main() {
+    /*
     FEM F;
-    F.create_time_nodes(0,5,300);
+    F.create_time_nodes(0,0.5,100);
     F.create_global_matricies();
 
     F.start();
@@ -83,6 +86,25 @@ int main() {
         }
     }
     plot_2d_NEW(v1, v2, z, "anim");
+    */
 
+    vector<v2f> points;
+    //cout<<"enter seed:\n";
+    int seed;
+    cin>> seed;
+    mt19937 mt(seed);
+    uniform_real_distribution<double> distx(0, 10);
+    uniform_real_distribution<double> disty(0, 2);
+    for(int i=0;i<2000;i++)
+        points.push_back({distx(mt), disty(mt)});
+    /*
+    v2f Pt(5.f, 5.f);
+    triangle t({0.f, 0.f},{10.f, 0.f}, {0.f, 10.f});
+    bool b = t.IsPointInCircumCircle(Pt);
+    */
+    triangulation triang(points);
+    triang.create();
+
+    plot_delaunay(triang.VecTriangles, "delaunay");
     system("pause");
 }

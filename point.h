@@ -8,8 +8,15 @@ public:
 
 	double x;
 	double y;
-};
 
+	
+	point operator + (point const &p);
+	point operator - (point const &p);
+	double operator ^ (point const &p);
+	double operator * (point const &p);
+	double len();
+
+};
 
 /*
 

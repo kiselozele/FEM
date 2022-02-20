@@ -36,24 +36,4 @@ void Delone::add_point(point &P) {
 	points.push_back(P);
 	int P_ind = points.size()-1;
 
-	for (int i = 0;i < Triangles.size();i++) {
-		if (IsPointInTriangle(P, i) == true) {
-			Triangles.push_back({Triangles[i][0], Triangles[i][1], P_ind});
-			points[Triangles[i][0]].push_triangle(, 0);
-			points[Triangles[i][1]].push_triangle(P_ind, 1);
-			points[P_ind].push_triangle(P_ind, 2);
-
-			points[Triangles[i][0]].push_triangle(P_ind, 0);
-
-			points[Triangles[i][0]].add_edge(P_ind);
-			points[Triangles[i][1]].add_edge(P_ind);
-			points[Triangles[i][2]].add_edge(P_ind);
-			
-			points[P_ind].add_edge(Triangles[i][0]);
-			points[P_ind].add_edge(Triangles[i][1]);
-			points[P_ind].add_edge(Triangles[i][2]);
-
-			Triangles.erase(Triangles.begin() + i);
-		}
-	}
 }
