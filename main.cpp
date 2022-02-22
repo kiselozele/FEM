@@ -9,7 +9,7 @@
 //#include "FEM.h"
 //#include "delone.h"
 #include "triangulation.h"
-
+#include "polygon.h"
 using namespace std;
 
 
@@ -86,10 +86,10 @@ int main() {
         }
     }
     plot_2d_NEW(v1, v2, z, "anim");
-    */
+    
 
     vector<v2f> points;
-    //cout<<"enter seed:\n";
+    cout<<"enter seed:\n";
     int seed;
     cin>> seed;
     mt19937 mt(seed);
@@ -97,14 +97,35 @@ int main() {
     uniform_real_distribution<double> disty(0, 2);
     for(int i=0;i<2000;i++)
         points.push_back({distx(mt), disty(mt)});
-    /*
-    v2f Pt(5.f, 5.f);
-    triangle t({0.f, 0.f},{10.f, 0.f}, {0.f, 10.f});
-    bool b = t.IsPointInCircumCircle(Pt);
-    */
     triangulation triang(points);
     triang.create();
-
     plot_delaunay(triang.VecTriangles, "delaunay");
+    
+    */
+
+    vector<v2f> data ={
+        {-1.,-1.},
+        {1.,-1.},
+        {1.,-0.05},
+        {0.5,-0.05},
+        {0.5,-0.95},
+        {-0.5,-0.95},
+        {-0.5,0.95},
+        {0.5,0.95},
+        {0.5,0.05},
+        {1.,0.05},
+        {1.,1.},
+        {-1.,1.},
+        {-1.,-1.}
+    };
+    plot_polygon(data, "polygon_0");
+    
+    polygon poly(data);
+    double in;
+    cout<< "enter h (double): ";
+    cin>>in;
+    poly.GenerateAdvancingFront(in);
+    plot_polygon(poly.AdvancingFront, "polygon_1");
+
     system("pause");
 }

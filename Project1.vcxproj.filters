@@ -27,13 +27,16 @@
     <ClInclude Include="elt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="delone.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="triangulation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="polygon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,10 +56,7 @@
     <ClCompile Include="elt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gnuplot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="delone.cpp">
+    <ClCompile Include="testing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -64,10 +64,10 @@
     <Text Include="text\boundary_0.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="text\elements.txt">
+    <Text Include="text\nodes.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="text\nodes.txt">
+    <Text Include="text\elements.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

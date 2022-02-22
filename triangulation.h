@@ -49,6 +49,43 @@ void plot_delaunay(vector<triangle> triangles, string image_name){
     //system("pause");
 }
 
+void plot_polygon(vector<v2f> points, string image_name){
+
+    FILE * gnuplotPipe = _popen ("gnuplot", "w"); // отваряме виртуална конзола с команда gnuplot и можем да си пишем в нея
+
+    vector<string> commands;
+   
+    commands.push_back("set terminal pngcairo size 1920, 1920");// default размер на изображението (1024, 768)
+    commands.push_back("set output '" + image_name + ".png'"); // може да се промени на .jpeg и други, но трябва преди това set terminal jpeg
+
+    commands.push_back("set xrange [-2:2]");
+    commands.push_back("set yrange [-2:2]");
+    commands.push_back("set grid");
+
+    //commands.push_back("unset ztics");   
+    //commands.push_back("set margins 0, 0, 0, 0");
+    //commands.push_back("unset border");
+    commands.push_back("unset key");
+
+    commands.push_back("$grid << EOD");
+
+    for (auto& point : points) {
+        commands.push_back(to_string(point.x) + " " + to_string(point.y));
+    }
+    commands.push_back("EOD");
+
+    commands.push_back("set style line 1 linecolor rgb '#0060ad' linetype 1 linewidth 2 pointtype 7 pointsize 1.5");
+    commands.push_back("plot '$grid' with linespoints linestyle 1");
+    for(int i =0;i<commands.size();i++){
+        fprintf(gnuplotPipe, "%s \n", commands[i].c_str());// много важно конвертиране от c++ string към c string - string.c_str()
+    }
+    for (int i = 0;i < commands.size();i++) {
+        //cout<<commands[i] << endl;
+    }
+    //system("pause");
+}
+
+
 class triangulation {
 public:
     triangulation(){};

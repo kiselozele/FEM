@@ -89,6 +89,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,6 +120,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,22 +129,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="delone.h" />
     <ClInclude Include="elt.h" />
     <ClInclude Include="FEM.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="point.h" />
+    <ClInclude Include="polygon.h" />
+    <ClInclude Include="testing.h" />
     <ClInclude Include="triangulation.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="delone.cpp" />
     <ClCompile Include="elt.cpp" />
-    <ClCompile Include="gnuplot.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="FEM.cpp" />
     <ClCompile Include="matrix.cpp" />
     <ClCompile Include="point.cpp" />
+    <ClCompile Include="testing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="text\boundary_0.txt" />
