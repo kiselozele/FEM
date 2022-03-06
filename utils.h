@@ -31,10 +31,34 @@ struct v2f{
     double operator ^(v2f v) {
         return this->x*v.y - this->y*v.x;
     }
+
     double len() {
         return pow(x*x + y*y, 0.5);
     }
+    v2f getnormalized() {
+        v2f out(this->x, this->y);
+        double len = out.len();
+        out.x = out.x/len;
+        out.y = out.y/len;
+        return out;
+    }
+
+    void normalize() {
+        double len = this->len();
+        x = x/len;
+        y = y/len;
+    }
+
+    v2f getortogonal() {
+        v2f out(-this->y, this->x);
+        return out;
+    }
     
+    void orthogonalize() {
+        swap(this->x, this->y);
+        this->y = -this->y;
+    }
+
     double x, y;
 };
 

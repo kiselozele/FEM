@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "polygon.h"
 #include "utils.h"
 
 using namespace std;
@@ -14,11 +15,11 @@ void plot_delaunay(vector<triangle> triangles, string image_name){
 
     vector<string> commands;
    
-    commands.push_back("set terminal pngcairo size 1920, 1080");// default размер на изображението (1024, 768)
+    commands.push_back("set terminal pngcairo size 1920, 1920");// default размер на изображението (1024, 768)
     commands.push_back("set output '" + image_name + ".png'"); // може да се промени на .jpeg и други, но трябва преди това set terminal jpeg
 
-    commands.push_back("set xrange [-5:50]");
-    commands.push_back("set yrange [-5:10]");
+    commands.push_back("set xrange [-2:2]");
+    commands.push_back("set yrange [-2:2]");
     commands.push_back("set grid");
 
     //commands.push_back("unset ztics");   
@@ -86,15 +87,18 @@ void plot_polygon(vector<v2f> points, string image_name){
 }
 
 
-class triangulation {
+class triangulation : polygon{
 public:
     triangulation(){};
-    triangulation(vector<v2f> Points) {
+    triangulation(vector<v2f> Points, vector<v2f> Region) {
         this->Points = Points;
+        this->AdvancingFront = Points;
+        this->Region = Region;
         //float L, R, U, D;
         //TODO Find points for startingtriangle
         double L, R = Points[0].x;
         double U, D = Points[0].y;
+        iteration = 0;
 
         for (int i = 1;i < Points.size();i++) {
             if(Points[i].x < L) L = Points[i].x;
@@ -104,10 +108,11 @@ public:
         }
         v2f S_0(L-1.,D -1.); v2f S_1 (L-1., 2.*U-D + 1.); v2f S_2(2.*R - L + 1., D - 1.);
         StartingTriangle = triangle(S_0, S_1, S_2);
-        VecTriangles.push_back(StartingTriangle);
     }
     void create() {
         int counter = 0;
+        VecTriangles.clear();
+        VecTriangles.push_back(StartingTriangle);
         for (auto& point : Points) {
             vector<triangle> BadTriangles;
 
@@ -134,14 +139,6 @@ public:
 
                 }
             }
-            /*
-            VecTriangles.erase(
-                remove_if(VecTriangles.begin(), VecTriangles.end(), [](triangle t){
-                    return t.IsBad;
-                }),
-                VecTriangles.end()
-            );
-            */
             
             for (int i = 0;i < VecTriangles.size();) {
                 if(VecTriangles[i].IsBad == true){
@@ -155,7 +152,6 @@ public:
                 triangle NewTriangle(edge.a, edge.b, point);
                 VecTriangles.push_back(NewTriangle);
             }
-            //plot_delaunay(VecTriangles, "plots/" + to_string(counter));
             counter++;
         }
         
@@ -174,20 +170,68 @@ public:
         
         cout<< "Created a triangulation with "<< VecTriangles.size() << 
             " triangles!\n";
-        /*
-        for (auto triangle : VecTriangles) {
-            cout<< "Triangle:\n";
-            for (int i = 0;i < 3;i++) {
-                cout<< fixed << "x: " << triangle.points[i].x << " y: " << triangle.points[i].y<< endl;
-            }
-            cout<<"\n";
-        }
-        */
-    }
+        plot_delaunay(this->VecTriangles, "triangulation_iteration_" + to_string(iteration));
 
+        if(iteration == 5)
+            exit(0);
+
+        iteration++;
+    }
+    
+    void refine(double tol) {
+        this->create();
+        while(true){
+            bool AnythingToDo = false;
+            for (auto& triangle : VecTriangles) {
+                double Dist = (Points[0] - triangle.CircumCenter).len();
+                for (auto& P : Points) {
+                    if(Dist > (P-triangle.CircumCenter).len())
+                        Dist = (P-triangle.CircumCenter).len();
+                }
+
+                if (triangle.CircumRadius > tol && Dist > 0.1) {
+                    Points.push_back(triangle.CircumCenter);
+                    AnythingToDo = true;
+                }
+            }
+            if (!AnythingToDo) {
+                break;
+            }
+            this->create();
+        }
+        plot_delaunay(VecTriangles,"img_last_triangulation_before_cut");
+
+        vector<v2f> ReverseRegion;
+        for (int i = Region.size() - 1;i >= 0;i--) {
+            ReverseRegion.push_back(Region[i]);
+        }
+        polygon poly(ReverseRegion);
+
+        for (int i = 0;i < Points.size();) {
+            double Dist = (Points[i] - AdvancingFront[0]).len();
+            for (int j = 0;j < AdvancingFront.size();j++) {
+                if (Dist > (Points[i] - AdvancingFront[j]).len()) {
+                    Dist = (Points[i] - AdvancingFront[j]).len();
+                }
+            }
+            
+            if (poly.IsPointInPolygon(Points[i]) == 0.0 && Dist > 0.001) {
+                Points.erase(Points.begin() + i);
+            }
+            else {
+                i++;
+            }
+        }
+        this->create();
+        plot_delaunay(VecTriangles,"img_after_removed_pts");
+        
+    }
     triangle StartingTriangle;
     vector<v2f> Points;
+    vector<v2f> AdvancingFront;
+    vector<v2f> Region;//Starting area
     vector<triangle> VecTriangles;
+    int iteration;
 
 
 };

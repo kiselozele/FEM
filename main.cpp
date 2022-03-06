@@ -103,6 +103,7 @@ int main() {
     
     */
 
+    /*
     vector<v2f> data ={
         {-1.,-1.},
         {1.,-1.},
@@ -118,14 +119,27 @@ int main() {
         {-1.,1.},
         {-1.,-1.}
     };
-    plot_polygon(data, "polygon_0");
+    */
+
+    vector<v2f> data;
+    random_device rd;
+    mt19937 mt(0);
+    uniform_real_distribution<double> distrib(-0.05,0.05);
+    for (double i = 0.;i <= 6.;i += 0.25) {
+        data.push_back({cos(i)+distrib(mt),sin(i)+distrib(mt)});
+    }
+    data.push_back(data[0]);
     
     polygon poly(data);
-    double in;
-    cout<< "enter h (double): ";
-    cin>>in;
-    poly.GenerateAdvancingFront(in);
-    plot_polygon(poly.AdvancingFront, "polygon_1");
-
-    system("pause");
+    
+    plot_polygon(poly.data, "img_starting_poly");
+    double in = 0.5;
+    //cout<< "enter h (double): ";
+    //cin>>in;
+    //poly.GenerateAdvancingFront(in);
+    
+    triangulation T(data, data);
+    T.refine(0.2);
+    //system("pause");
+    return 0;
 }
