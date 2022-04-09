@@ -1,5 +1,3 @@
-#ifndef POLYGON
-#define POLYGON
 #include<vector>
 #include"utils.h"
 #include "triangulation.h"
@@ -53,7 +51,7 @@ void polygon::GenerateAdvancingFront(double h_boundary) {
     for (int i = 0;i < data.size() - 1;i++) {
         double n = floor((data[i+1]-data[i]).len()/h_boundary);
         for (int j = 0;j < n;j++) {
-            AdvancingFront.push_back({(n-j)/n*data[i].x + j/n*data[i+1].x, 
+            AdvancingFront.push_back({(n-j)/n*data[i].x + j/n*data[i+1].x,
                                       (n-j)/n*data[i].y + j/n*data[i+1].y});
         }
     }
@@ -71,6 +69,3 @@ void polygon::GenerateAdvancingFront(double h_boundary) {
         }
     }
 }
-
-
-#endif // !POLYGON

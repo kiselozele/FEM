@@ -1,6 +1,4 @@
-﻿#ifndef TRIANGULATION
-#define TRIANGULATION
-#include <math.h>
+﻿#include <math.h>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -89,10 +87,8 @@ void plot_polygon(vector<v2f> points, string image_name){
 }
 
 
-class triangulation : polygon{
-public:
-    triangulation(){};
-    triangulation(vector<v2f> Points, vector<v2f> Region) {
+triangulation::triangulation(){};
+triangulation::triangulation(vector<v2f> Points, vector<v2f> Region) {
         this->Points = Points;
         this->AdvancingFront = Points;
         this->Region = Region;
@@ -111,7 +107,8 @@ public:
         v2f S_0(L-1.,D -1.); v2f S_1 (L-1., 2.*U-D + 1.); v2f S_2(2.*R - L + 1., D - 1.);
         StartingTriangle = triangle(S_0, S_1, S_2);
     }
-    void create() {
+void
+triangulation::create() {
         int counter = 0;
         VecTriangles.clear();
         VecTriangles.push_back(StartingTriangle);
@@ -178,9 +175,10 @@ public:
             exit(0);
 
         iteration++;
-    }
+}
 
-    void refine(double tol) {
+void
+triangulation::refine(double tol) {
         this->create();
         while(true){
             bool AnythingToDo = false;
@@ -226,18 +224,4 @@ public:
         }
         this->create();
         plot_delaunay(VecTriangles,"img_after_removed_pts");
-
-    }
-    triangle StartingTriangle;
-    vector<v2f> Points;
-    vector<v2f> AdvancingFront;
-    vector<v2f> Region;//Starting area
-    vector<triangle> VecTriangles;
-    int iteration;
-
-
-};
-
-
-
-#endif
+}
