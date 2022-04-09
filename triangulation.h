@@ -17,7 +17,7 @@ void plot_polygon(vector<v2f> points, string image_name);
 class triangulation : polygon{
 
 public:
-    triangulation(){};
+    triangulation();
     triangulation(vector<v2f> Points, vector<v2f> Region);
     void create();
     void refine(double tol);
