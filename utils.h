@@ -4,6 +4,23 @@
 #include <math.h>
 #include <vector>
 
+
+/* Cross-platform wrapper to use _popen, _pclose on both WIN and Linux */
+#ifndef _WIN32
+#include <unistd.h>
+#include <stdio.h>
+
+inline int _pipe(int fildes[2], unsigned psize, int textmode) {
+   return pipe(fildes);
+}
+inline FILE* _popen(const char* command, const char* type) {
+   return popen(command, type);
+}
+inline void _pclose(FILE* file) {
+   pclose(file);
+}
+#endif
+
 using namespace std;
 
 typedef struct v2f{

@@ -9,22 +9,6 @@
 #include "utils.h"
 #include "triangulation.h"
 
-
-/* Cross-platform wrapper to use _popen, _pclose on both WIN and Linux */
-#ifndef _WIN32
-#include <unistd.h>
-
-inline int _pipe(int fildes[2], unsigned psize, int textmode) {
-   return pipe(fildes);
-}
-inline FILE* _popen(const char* command, const char* type) {
-   return popen(command, type);
-}
-inline void _pclose(FILE* file) { 
-   pclose(file); 
-}
-#endif
-
 using namespace std;
 
 void plot_delaunay(vector<triangle> triangles, string image_name){
@@ -32,7 +16,7 @@ void plot_delaunay(vector<triangle> triangles, string image_name){
     FILE * gnuplotPipe = _popen ("gnuplot", "w"); // отваряме виртуална конзола с команда gnuplot и можем да си пишем в нея
 
     vector<string> commands;
-   
+
     commands.push_back("set terminal pngcairo size 1920, 1920");// default размер на изображението (1024, 768)
     commands.push_back("set output '" + image_name + ".png'"); // може да се промени на .jpeg и други, но трябва преди това set terminal jpeg
 
@@ -40,7 +24,7 @@ void plot_delaunay(vector<triangle> triangles, string image_name){
     commands.push_back("set yrange [-2:2]");
     commands.push_back("set grid");
 
-    //commands.push_back("unset ztics");   
+    //commands.push_back("unset ztics");
     //commands.push_back("set margins 0, 0, 0, 0");
     //commands.push_back("unset border");
     commands.push_back("unset key");
@@ -73,7 +57,7 @@ void plot_polygon(vector<v2f> points, string image_name){
     FILE * gnuplotPipe = _popen ("gnuplot", "w"); // отваряме виртуална конзола с команда gnuplot и можем да си пишем в нея
 
     vector<string> commands;
-   
+
     commands.push_back("set terminal pngcairo size 1920, 1920");// default размер на изображението (1024, 768)
     commands.push_back("set output '" + image_name + ".png'"); // може да се промени на .jpeg и други, но трябва преди това set terminal jpeg
 
@@ -81,7 +65,7 @@ void plot_polygon(vector<v2f> points, string image_name){
     commands.push_back("set yrange [-2:2]");
     commands.push_back("set grid");
 
-    //commands.push_back("unset ztics");   
+    //commands.push_back("unset ztics");
     //commands.push_back("set margins 0, 0, 0, 0");
     //commands.push_back("unset border");
     commands.push_back("unset key");
@@ -157,7 +141,7 @@ public:
 
                 }
             }
-            
+
             for (int i = 0;i < VecTriangles.size();) {
                 if(VecTriangles[i].IsBad == true){
                     VecTriangles.erase(VecTriangles.begin() + i);
@@ -172,7 +156,7 @@ public:
             }
             counter++;
         }
-        
+
         for (auto iter = VecTriangles.begin();iter != VecTriangles.end();) {
             bool ContrainsVertex = false;
             for (int i = 0;i < 3;i++) {
@@ -185,8 +169,8 @@ public:
                 iter = VecTriangles.erase(iter);
             }else iter ++;
         }
-        
-        cout<< "Created a triangulation with "<< VecTriangles.size() << 
+
+        cout<< "Created a triangulation with "<< VecTriangles.size() <<
             " triangles!\n";
         plot_delaunay(this->VecTriangles, "triangulation_iteration_" + to_string(iteration));
 
@@ -195,7 +179,7 @@ public:
 
         iteration++;
     }
-    
+
     void refine(double tol) {
         this->create();
         while(true){
@@ -232,7 +216,7 @@ public:
                     Dist = (Points[i] - AdvancingFront[j]).len();
                 }
             }
-            
+
             if (poly.IsPointInPolygon(Points[i]) == 0.0 && Dist > 0.001) {
                 Points.erase(Points.begin() + i);
             }
@@ -242,7 +226,7 @@ public:
         }
         this->create();
         plot_delaunay(VecTriangles,"img_after_removed_pts");
-        
+
     }
     triangle StartingTriangle;
     vector<v2f> Points;

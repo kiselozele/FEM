@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "utils.h"
+
 using namespace std;
 
 void plot_2d(vector<double>  v1, vector<double> v2, vector<vector<vector<double>>> v3, string image_name){
@@ -10,7 +12,7 @@ void plot_2d(vector<double>  v1, vector<double> v2, vector<vector<vector<double>
     FILE * gnuplotPipe = _popen ("gnuplot -persistant", "w"); // отваряме виртуална конзола с команда gnuplot и можем да си пишем в нея
 
     vector<string> commands;
-   
+
     commands.push_back("set terminal gif animate delay 10 size 400, 400");// default размер на изображението (1024, 768)
     commands.push_back("set output '" + image_name + ".gif'"); // може да се промени на .jpeg и други, но трябва преди това set terminal jpeg
 
@@ -19,7 +21,7 @@ void plot_2d(vector<double>  v1, vector<double> v2, vector<vector<vector<double>
     commands.push_back("set zrange [-0.1:0.1]");
     commands.push_back("set xyplane at 0");
 
-    //commands.push_back("unset ztics");   
+    //commands.push_back("unset ztics");
     commands.push_back("set margins 0, 0, 0, 0");
     //commands.push_back("unset border");
     commands.push_back("unset key");
@@ -47,9 +49,9 @@ void plot_2d(vector<double>  v1, vector<double> v2, vector<vector<vector<double>
     //        commands.push_back(to_string(v2[j]) + "\t"+ to_string(v1[i][j]));
     //    }
     //    commands.push_back("e");
-    //    
+    //
     //    //commands.push_back("set output");
-    //    
+    //
     //}
     //commands.push_back("set output");
     //commands.push_back("set term pop");
