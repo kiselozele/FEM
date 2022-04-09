@@ -3,7 +3,9 @@
 
 #include <math.h>
 #include <vector>
+
 #include "utils.h"
+
 
 using namespace std;
 
@@ -66,11 +68,11 @@ struct v2f{
     double x, y;
 };
 
-double x_cos(v2f v1, v2f v2) {
+double cos(v2f v1, v2f v2) {
 	return (v1 * v2) / (v1.len()*v2.len());
 }
 
-double x_sin(v2f v1, v2f v2) {
+double sin(v2f v1, v2f v2) {
 	return (v1 ^ v2) / (v1.len()*v2.len());
 }
 
@@ -108,12 +110,12 @@ struct triangle {
         this->edges.push_back(b);
         c = edge(C, A);
         this->edges.push_back(c);
-        alpha = acos(x_cos(B-A,C-A));
-        beta = acos(x_cos(A-B,C-B));
-        gamma = acos(x_cos(B-C,A-C));
-        CircumCenter = v2f((A.x*x_sin(2.*alpha)+B.x*x_sin(2.*beta)+C.x*x_sin(2.*gamma))/(x_sin(2.*alpha)+x_sin(2.*beta)+x_sin(2.*gamma)), 
-            (A.y*x_sin(2.*alpha)+B.y*x_sin(2.*beta)+C.y*x_sin(2.*gamma))/(x_sin(2.*alpha)+x_sin(2.*beta)+x_sin(2.*gamma)));
-        CircumRadius = b.len/(2.*x_sin(alpha));
+        alpha = acos(cos(B-A,C-A));
+        beta = acos(cos(A-B,C-B));
+        gamma = acos(cos(B-C,A-C));
+        CircumCenter = v2f((A.x*sin(2.*alpha) + B.x * sin(2.*beta) + C.x * sin(2.*gamma))/(sin(2.*alpha)+sin(2.*beta)+sin(2.*gamma)), 
+            (A.y*sin(2.*alpha)+B.y*sin(2.*beta)+C.y*sin(2.*gamma))/(sin(2.*alpha)+sin(2.*beta)+sin(2.*gamma)));
+        CircumRadius = b.len/(2.*sin(alpha));
         //float p = (a.len +b.len + c.len)/2.;
         //CircumRadius = a.len*b.len*c.len/(4.f*sqrtf((p-a.len)*(p-b.len)*(p-c.len)*p)); IsBad = false;
     }
@@ -127,7 +129,7 @@ struct triangle {
         else return false;
     }
     double GetArea() {
-        return b.len*x_sin(alpha)/2.;
+        return b.len*sin(alpha)/2.;
     }
     v2f CircumCenter;
     vector<v2f> points;

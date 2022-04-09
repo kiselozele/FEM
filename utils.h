@@ -6,7 +6,7 @@
 
 using namespace std;
 
-typedef struct v2f_st{
+typedef struct v2f{
     v2f();
     v2f(double x, double y);   
     bool operator ==(v2f v);
@@ -22,8 +22,8 @@ typedef struct v2f_st{
     double x, y;
 } v2f;
 
-double x_cos(v2f v1, v2f v2);
-double x_sin(v2f v1, v2f v2);
+double cos(v2f v1, v2f v2);
+double sin(v2f v1, v2f v2);
 
 struct edge {
     edge();
