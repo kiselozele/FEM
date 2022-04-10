@@ -1,11 +1,11 @@
-﻿#ifndef TRIANGULATION
-#define TRIANGULATION
-#include <math.h>
+﻿#include <math.h>
 #include <iostream>
 #include <vector>
 #include <string>
+
 #include "polygon.h"
 #include "utils.h"
+#include "triangulation.h"
 
 using namespace std;
 
@@ -14,7 +14,7 @@ void plot_delaunay(vector<triangle> triangles, string image_name){
     FILE * gnuplotPipe = _popen ("gnuplot", "w"); // отваряме виртуална конзола с команда gnuplot и можем да си пишем в нея
 
     vector<string> commands;
-   
+
     commands.push_back("set terminal pngcairo size 1920, 1920");// default размер на изображението (1024, 768)
     commands.push_back("set output '" + image_name + ".png'"); // може да се промени на .jpeg и други, но трябва преди това set terminal jpeg
 
@@ -22,7 +22,7 @@ void plot_delaunay(vector<triangle> triangles, string image_name){
     commands.push_back("set yrange [-2:2]");
     commands.push_back("set grid");
 
-    //commands.push_back("unset ztics");   
+    //commands.push_back("unset ztics");
     //commands.push_back("set margins 0, 0, 0, 0");
     //commands.push_back("unset border");
     commands.push_back("unset key");
@@ -55,7 +55,7 @@ void plot_polygon(vector<v2f> points, string image_name){
     FILE * gnuplotPipe = _popen ("gnuplot", "w"); // отваряме виртуална конзола с команда gnuplot и можем да си пишем в нея
 
     vector<string> commands;
-   
+
     commands.push_back("set terminal pngcairo size 1920, 1920");// default размер на изображението (1024, 768)
     commands.push_back("set output '" + image_name + ".png'"); // може да се промени на .jpeg и други, но трябва преди това set terminal jpeg
 
@@ -63,7 +63,7 @@ void plot_polygon(vector<v2f> points, string image_name){
     commands.push_back("set yrange [-2:2]");
     commands.push_back("set grid");
 
-    //commands.push_back("unset ztics");   
+    //commands.push_back("unset ztics");
     //commands.push_back("set margins 0, 0, 0, 0");
     //commands.push_back("unset border");
     commands.push_back("unset key");
@@ -87,10 +87,8 @@ void plot_polygon(vector<v2f> points, string image_name){
 }
 
 
-class triangulation : polygon{
-public:
-    triangulation(){};
-    triangulation(vector<v2f> Points, vector<v2f> Region) {
+triangulation::triangulation(){};
+triangulation::triangulation(vector<v2f> Points, vector<v2f> Region) {
         this->Points = Points;
         this->AdvancingFront = Points;
         this->Region = Region;
@@ -109,7 +107,8 @@ public:
         v2f S_0(L-1.,D -1.); v2f S_1 (L-1., 2.*U-D + 1.); v2f S_2(2.*R - L + 1., D - 1.);
         StartingTriangle = triangle(S_0, S_1, S_2);
     }
-    void create() {
+void
+triangulation::create() {
         int counter = 0;
         VecTriangles.clear();
         VecTriangles.push_back(StartingTriangle);
@@ -139,7 +138,7 @@ public:
 
                 }
             }
-            
+
             for (int i = 0;i < VecTriangles.size();) {
                 if(VecTriangles[i].IsBad == true){
                     VecTriangles.erase(VecTriangles.begin() + i);
@@ -154,7 +153,7 @@ public:
             }
             counter++;
         }
-        
+
         for (auto iter = VecTriangles.begin();iter != VecTriangles.end();) {
             bool ContrainsVertex = false;
             for (int i = 0;i < 3;i++) {
@@ -167,8 +166,8 @@ public:
                 iter = VecTriangles.erase(iter);
             }else iter ++;
         }
-        
-        cout<< "Created a triangulation with "<< VecTriangles.size() << 
+
+        cout<< "Created a triangulation with "<< VecTriangles.size() <<
             " triangles!\n";
         plot_delaunay(this->VecTriangles, "triangulation_iteration_" + to_string(iteration));
 
@@ -176,9 +175,10 @@ public:
             exit(0);
 
         iteration++;
-    }
-    
-    void refine(double tol) {
+}
+
+void
+triangulation::refine(double tol) {
         this->create();
         while(true){
             bool AnythingToDo = false;
@@ -214,7 +214,7 @@ public:
                     Dist = (Points[i] - AdvancingFront[j]).len();
                 }
             }
-            
+
             if (poly.IsPointInPolygon(Points[i]) == 0.0 && Dist > 0.001) {
                 Points.erase(Points.begin() + i);
             }
@@ -224,18 +224,4 @@ public:
         }
         this->create();
         plot_delaunay(VecTriangles,"img_after_removed_pts");
-        
-    }
-    triangle StartingTriangle;
-    vector<v2f> Points;
-    vector<v2f> AdvancingFront;
-    vector<v2f> Region;//Starting area
-    vector<triangle> VecTriangles;
-    int iteration;
-
-
-};
-
-
-
-#endif
+}

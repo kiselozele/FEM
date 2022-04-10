@@ -1,12 +1,12 @@
 #include "testing.h"
 #include <cstdlib>
-//#include <cstdio>
 #include <stdio.h>
 #include <iostream>
 
+/*
 extern "C" void cfun() {
     int a = 10;
-   
+
     __asm{
         push rax
         mov rax, 32
@@ -14,7 +14,7 @@ extern "C" void cfun() {
         pop rax
     }
 
-   printf("c= %d\n", a);  
+   printf("c= %d\n", a);
 }
 
 void cppfun() {
@@ -23,3 +23,4 @@ void cppfun() {
 
     std::cout<< "b= "<< b << std::endl;
 }
+*/

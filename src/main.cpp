@@ -3,14 +3,16 @@
 #include <cmath>
 #include <string>
 #include <random>
+
+#include "triangulation.h"
+#include "polygon.h"
+#include "utils.h"
 //#include "point.h"
 //#include "elt.h"
 //#include "matrix.h"
 //#include "FEM.h"
 //#include "delone.h"
-#include "triangulation.h"
-#include "polygon.h"
-using namespace std;
+
 
 
 //TODO:
@@ -61,8 +63,11 @@ void plot_2d_NEW(vector<double>& v1, vector<double>& v2, vector<vector<double>>&
 }
 */
 
-int main() {
-    /*
+
+void
+unused_main()
+{
+/*
     FEM F;
     F.create_time_nodes(0,0.5,100);
     F.create_global_matricies();
@@ -102,8 +107,7 @@ int main() {
     plot_delaunay(triang.VecTriangles, "delaunay");
     
     */
-
-    /*
+	/*
     vector<v2f> data ={
         {-1.,-1.},
         {1.,-1.},
@@ -121,6 +125,12 @@ int main() {
     };
     */
 
+
+
+}
+using namespace std;
+
+int main() {
     vector<v2f> data;
     random_device rd;
     mt19937 mt(0);

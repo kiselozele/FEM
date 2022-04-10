@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Triangulation files generated
+triangulation_iteration_*.png
+
+# Build folder
+build
